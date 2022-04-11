@@ -1,0 +1,19 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: argocd
+  project: default
+  source:
+    targetRevision: main
+    path: monitoring
+    repoURL: https://github.com/frealmyr/argo-poc-manifests
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

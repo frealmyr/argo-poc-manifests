@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: "{{name}}-prometheus"
+      namespace: argocd
+    spec:
+      destination:
+        server: "{{server}}"
+        namespace: monitoring
+      project: default
+      source:
+        repoURL: https://github.com/frealmyr/argo-poc-manifests
+        path: monitoring/prometheus
+        targetRevision: main
+        helm:
+          releaseName: prometheus
+          valueFiles:
+            - default.yaml
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
