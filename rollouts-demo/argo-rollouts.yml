@@ -1,0 +1,31 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: argo-rollouts
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: "{{name}}-argo-rollouts"
+      namespace: argocd
+    spec:
+      destination:
+        server: "{{server}}"
+        namespace: argo-rollouts
+      project: default
+      source:
+        repoURL: https://github.com/frealmyr/argo-poc-manifests
+        path: rollouts-demo/argo-rollouts
+        targetRevision: main
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
