@@ -17,3 +17,22 @@ spec:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rollouts-demo
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: argocd
+  project: default
+  source:
+    targetRevision: main
+    path: rollouts-demo
+    repoURL: https://github.com/frealmyr/argo-poc-manifests
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
