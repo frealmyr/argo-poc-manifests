@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gmp
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: "{{name}}-gmp"
+      namespace: argocd
+    spec:
+      destination:
+        server: "{{server}}"
+        namespace: monitoring
+      project: default
+      source:
+        repoURL: https://github.com/frealmyr/argo-poc-manifests
+        path: monitoring/gmp
+        targetRevision: main
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

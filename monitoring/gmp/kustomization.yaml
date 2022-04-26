@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+kind: Kustomization
+
+bases:
+  - https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.4.0/manifests/setup.yaml
+  - https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.4.0/manifests/operator.yaml
+  - ./manifests/operatorconfig.yaml
